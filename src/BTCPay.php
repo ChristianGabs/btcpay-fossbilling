@@ -333,7 +333,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
         try {
             $transaction = $this->di['db']->dispense('Transaction');
             $transaction->invoice_id = $invoice->id;
-            $transaction->gateway_id = 6;
+            $transaction->gateway_id = $invoice->gateway_id;;
             $transaction->txn_id = $request['id'];
             $transaction->txn_status = $request['status'];
             $transaction->amount = $invoice->base_income;
