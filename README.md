@@ -13,7 +13,7 @@ This version requires the following:
 
 ### Manual installation
 
-1. Download the latest release from the [extension directory](https://extensions.fossbilling.org/extension/BTCPay)
+1. Download the latest release from the [releases](https://github.com/ChristianGabs/btcpay-fossbilling/releases/tag/0.1.0)
 2. Create a new folder named `BTCPay` in the `/library/Payment/Adapter` directory of your FOSSBilling installation
 3. Extract the archive you've downloaded in the first step into the new directory
 4. Go to the "Payment gateways" page in your admin panel (under the "System" menu in the navigation bar) and find BTCPay in the "New payment gateway" tab
