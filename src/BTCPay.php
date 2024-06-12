@@ -103,6 +103,18 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
                         'label' => 'Tax included :',
                     ],
                 ],
+                'policy_speed'   => [
+                    'select',
+                    [
+                        'multiOptions' => [
+                            "SPEED_HIGH"      => "High Speed",
+                            "SPEED_MEDIUM"    => "Medium Speed",
+                            "SPEED_LOW"       => "Low Speed",
+                            "SPEED_LOWMEDIUM" => "Low Medium Speed"
+                        ],
+                        'label'        => 'Policy Speed :',
+                    ]
+                ],
                 'payment_method' => [
                     'select',
                     [
@@ -270,7 +282,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             // Setup custom checkout options, defaults get picked from store config.
             $checkoutOptions = new InvoiceCheckoutOptions();
             $checkoutOptions
-                ->setSpeedPolicy($checkoutOptions::SPEED_HIGH)
+                ->setSpeedPolicy(constant(get_class($checkoutOptions).'::'.$this->config['policy_speed'] ?? "SPEED_HIGH"))
                 ->setPaymentMethods(explode(",", $this->config['payment_method']))
                 ->setRedirectURL($this->di['tools']->url('invoice/'.$invoice->hash));
             $request = $this->btcpay->createInvoice(
@@ -333,7 +345,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
         try {
             $transaction = $this->di['db']->dispense('Transaction');
             $transaction->invoice_id = $invoice->id;
-            $transaction->gateway_id = $invoice->gateway_id;;
+            $transaction->gateway_id = $invoice->gateway_id;
             $transaction->txn_id = $request['id'];
             $transaction->txn_status = $request['status'];
             $transaction->amount = $invoice->base_income;
