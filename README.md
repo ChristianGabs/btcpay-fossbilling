@@ -13,7 +13,7 @@ This version requires the following:
 
 ### Manual installation
 
-1. Download the latest release from the [releases](hhttps://github.com/ChristianGabs/btcpay-fossbilling/releases/latest)
+1. Download the latest release from the [releases](https://github.com/ChristianGabs/btcpay-fossbilling/releases/latest)
 2. Create a new folder named `BTCPay` in the `/library/Payment/Adapter` directory of your FOSSBilling installation
 3. Extract the archive you've downloaded in the first step into the new directory
 4. Go to the "Payment gateways" page in your admin panel (under the "System" menu in the navigation bar) and find BTCPay in the "New payment gateway" tab
@@ -32,6 +32,3 @@ After you have enabled the BTCPay plugin, the configuration steps are:
 
 ## License
 This FOSSBilling BTCPay Payment Gateway Integration module is open-source software licensed under the [Apache License 2.0](LICENSE).
-
-> *Note*: This module is not officially affiliated with [FOSSBilling](https://fossbilling.org) or [BTCPay](https://btcpayserver.org/). Please refer to their respective documentation for detailed information on FOSSBilling and BTCPayServer.
-
