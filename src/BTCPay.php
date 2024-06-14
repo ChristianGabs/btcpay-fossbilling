@@ -213,8 +213,8 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
 
                     // Update the account funds
                     $client = $this->di['db']->getExistingModelById('Client', $invoice->client_id);
-                    $clientService->addFunds($client, PreciseNumber::parseString($invoiceService->getTotalWithTax($invoice)), "BTCPay transaction {$payloadData->invoiceId}", [
-                        'amount'      => $invoice->base_income,
+                    $clientService->addFunds($client, $invoiceService->getTotalWithTax($invoice), "BTCPay transaction {$payloadData->invoiceId}", [
+                        'amount'      => $invoiceService->getTotalWithTax($invoice),
                         'description' => 'Stripe transaction '.$payloadData->invoiceId,
                         'type'        => 'transaction',
                         'rel_id'      => $id,
@@ -288,7 +288,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             $request = $this->btcpay->createInvoice(
                 $this->config['store_id'],
                 $invoice->currency,
-                PreciseNumber::parseString($invoiceService->getTotalWithTax($invoice)),
+                PreciseNumber::parseFloat($invoiceService->getTotalWithTax($invoice), 2),
                 uniqid()."#{$invoice->nr}",
                 $invoice->buyer_email,
                 $metaData,
