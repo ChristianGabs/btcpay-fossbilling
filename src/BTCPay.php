@@ -288,7 +288,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             $request = $this->btcpay->createInvoice(
                 $this->config['store_id'],
                 $invoice->currency,
-                $invoiceService->getTotalWithTax($invoice),
+                PreciseNumber::parseString($invoiceService->getTotalWithTax($invoice)),
                 uniqid()."#{$invoice->nr}",
                 $invoice->buyer_email,
                 $metaData,
