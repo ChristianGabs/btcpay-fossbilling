@@ -213,7 +213,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
 
                     // Update the account funds
                     $client = $this->di['db']->getExistingModelById('Client', $invoice->client_id);
-                    $clientService->addFunds($client, $invoice->base_income, "BTCPay transaction {$payloadData->invoiceId}", [
+                    $clientService->addFunds($client, PreciseNumber::parseString($invoiceService->getTotalWithTax($invoice)), "BTCPay transaction {$payloadData->invoiceId}", [
                         'amount'      => $invoice->base_income,
                         'description' => 'Stripe transaction '.$payloadData->invoiceId,
                         'type'        => 'transaction',
@@ -343,12 +343,14 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
     protected function createTransactionTxn(Model_Invoice $invoice, array $request, string $status = "pending"): bool
     {
         try {
+            $invoiceService = $this->di['mod_service']('Invoice');
+
             $transaction = $this->di['db']->dispense('Transaction');
             $transaction->invoice_id = $invoice->id;
             $transaction->gateway_id = $invoice->gateway_id;
             $transaction->txn_id = $request['id'];
             $transaction->txn_status = $request['status'];
-            $transaction->amount = $invoice->base_income;
+            $transaction->amount = PreciseNumber::parseString($invoiceService->getTotalWithTax($invoice));
             $transaction->currency = $invoice->currency;
             $transaction->status = $status;
             $transaction->validate_ipn = 1;
