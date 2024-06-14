@@ -278,7 +278,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
                 'taxIncluded'   => (float) $this->config['tax_included'] ?? 6.15,
                 // tax amount (included in the total amount).
             ];
-
+            $invoiceService = $this->di['mod_service']('Invoice');
             // Setup custom checkout options, defaults get picked from store config.
             $checkoutOptions = new InvoiceCheckoutOptions();
             $checkoutOptions
@@ -288,7 +288,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             $request = $this->btcpay->createInvoice(
                 $this->config['store_id'],
                 $invoice->currency,
-                PreciseNumber::parseString($invoice->base_income),
+                $invoiceService->getTotalWithTax($invoice),
                 uniqid()."#{$invoice->nr}",
                 $invoice->buyer_email,
                 $metaData,
