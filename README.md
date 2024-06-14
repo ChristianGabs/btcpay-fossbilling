@@ -10,8 +10,11 @@ This version requires the following:
 * Running BTCPay instance: [deployment guide](https://docs.btcpayserver.org/Deployment/)
 
 ## Installing the Plugin
+### 1). Extension directory
 
-### Manual installation
+The easiest way to install this extension is by using the [FOSSBilling extension directory](https://extensions.fossbilling.org/extension/BTCPay).
+
+### 2). Manual installation
 
 1. Download the latest release from the [releases](https://github.com/ChristianGabs/btcpay-fossbilling/releases/latest)
 2. Create a new folder named `BTCPay` in the `/library/Payment/Adapter` directory of your FOSSBilling installation
