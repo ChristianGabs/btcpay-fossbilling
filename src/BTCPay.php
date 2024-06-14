@@ -301,7 +301,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             /**
              * Redirect to payment screen
              */
-            $this->redirect($request['checkoutLink']);
+            return '<script type="text/javascript">window.location = "'. $request['checkoutLink'] . '";</script>';
         } catch (BTCPayException $e) {
             return "<code>".$e->getMessage()."</code>";
         }
