@@ -200,6 +200,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
                     "message" => "ok",
                 ]);
             }
+            $this->di['logger']->setChannel('event')->debug(sprintf("Transaction Event Type : '%s'", $payloadData->type));
             switch ($payloadData->type) {
                 //case "InvoiceSettled" :
                 case "InvoicePaymentSettled":
@@ -238,9 +239,11 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
                     break;
                 }
                 default :
-                    error_log('Unknown BTCPay transaction '.$payloadData->invoiceId);
+                    $this->di['logger']->setChannel('event')->debug(sprintf("Unknown BTCPay transaction, transaction id : '%s' ".$payloadData->invoiceId));
                     break;
             }
+        } else {
+            $this->di['logger']->setChannel('event')->debug(sprintf('[BTCPay] validation has failed. HTTP_BTCPAY_SIG : "%s" IPN Secret : "%s" ', $data['server']['HTTP_BTCPAY_SIG'], $this->config['ipn_secret']));
         }
         return json_encode([
             "code"    => "200",
@@ -301,7 +304,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             /**
              * Redirect to payment screen
              */
-            return '<script type="text/javascript">window.location = "'. $request['checkoutLink'] . '";</script>';
+            return '<script type="text/javascript">window.location = "'.$request['checkoutLink'].'";</script>';
         } catch (BTCPayException $e) {
             return "<code>".$e->getMessage()."</code>";
         }
@@ -350,7 +353,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             $transaction->gateway_id = $invoice->gateway_id;
             $transaction->txn_id = $request['id'];
             $transaction->txn_status = $request['status'];
-            $transaction->amount = PreciseNumber::parseString($invoiceService->getTotalWithTax($invoice));
+            $transaction->amount = PreciseNumber::parseFloat($invoiceService->getTotalWithTax($invoice));
             $transaction->currency = $invoice->currency;
             $transaction->status = $status;
             $transaction->validate_ipn = 1;
