@@ -190,7 +190,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
     public function processTransaction($api_admin, $id, $data, $gateway_id): string
     {
         $payload = $data['http_raw_post_data'];
-        $isValid = Webhook::isIncomingWebhookRequestValid($payload, $data['server']['HTTP_BTCPAY_SIG'], $this->config['ipn_secret']);
+        $isValid = Webhook::isIncomingWebhookRequestValid($payload, $data['server']['HTTP_BTCPAY_SIG'] ?? "", $this->config['ipn_secret']);
         if ($isValid) {
             $payloadData = json_decode($payload);
             $transaction = $this->di['db']->findOne("Transaction", "txn_id = :txn_id", [":txn_id" => $payloadData->invoiceId]);
@@ -243,7 +243,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
                     break;
             }
         } else {
-            $this->di['logger']->setChannel('event')->debug(sprintf('[BTCPay] validation has failed. HTTP_BTCPAY_SIG : "%s" IPN Secret : "%s" ', $data['server']['HTTP_BTCPAY_SIG'], $this->config['ipn_secret']));
+            $this->di['logger']->setChannel('event')->debug(sprintf('[BTCPay] validation has failed. HTTP_BTCPAY_SIG : "%s" IPN Secret : "%s" ', $data['server']['HTTP_BTCPAY_SIG'] ?? "", $this->config['ipn_secret']));
         }
         return json_encode([
             "code"    => "200",
