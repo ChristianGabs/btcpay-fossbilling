@@ -239,7 +239,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
                     break;
                 }
                 default :
-                    $this->di['logger']->setChannel('event')->debug(sprintf("Unknown BTCPay transaction, transaction id : '%s' ".$payloadData->invoiceId));
+                    $this->di['logger']->setChannel('event')->debug(sprintf("Unknown BTCPay transaction, transaction id : '%s' ", $payloadData->invoiceId));
                     break;
             }
         } else {
