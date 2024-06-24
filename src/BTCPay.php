@@ -202,8 +202,7 @@ class Payment_Adapter_BTCPay implements FOSSBilling\InjectionAwareInterface
             }
             $this->di['logger']->setChannel('event')->debug(sprintf("Transaction Event Type : '%s'", $payloadData->type));
             switch ($payloadData->type) {
-                //case "InvoiceSettled" :
-                case "InvoicePaymentSettled":
+                case "InvoiceSettled":
                 {
                     // Instance the services we need
                     $clientService = $this->di['mod_service']('client');
