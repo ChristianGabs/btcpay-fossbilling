@@ -33,5 +33,19 @@ After you have enabled the BTCPay plugin, the configuration steps are:
 5. Tax Included
 6. Speed Policy Options [High,Medium,Low, Low Medium : speed]
 
+## Debugging Webhook Callbacks
+
+Enable Debugging:
+
+1) Open config.php and set 
+   ```debug => true```.
+
+   - Remember to revert this setting to false once you have finished debugging.
+2) View Callback Responses:
+   - You can find the responses from callbacks in the log files located at FossBilling/data/log/event/event-<date>.log.
+3) Example of debugging callbacks 
+    - [BTCPay] validation has failed. HTTP_BTCPAY_SIG : "" IPN Secret : "********"
+    - In this scenario, your IPN Secret is incorrect.
+
 ## License
 This FOSSBilling BTCPay Payment Gateway Integration module is open-source software licensed under the [Apache License 2.0](LICENSE).
